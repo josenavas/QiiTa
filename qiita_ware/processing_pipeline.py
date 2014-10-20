@@ -11,6 +11,90 @@ from sys import stderr
 from qiita_db.logger import LogEntry
 
 
+# ========================= PROCESS FASTA FUNCTIONS ========================= #
+def _get_preprocess_fasta_cmd(raw_data, params):
+    """Generates the split_libraries.py command for the raw_data
+
+    Parameters
+    ----------
+    raw_data : RawData
+        The raw data object to pre-process
+    params : PreprocessedFastaParams
+        The parameters to use for the preprocessing
+
+    Returns
+    -------
+    tuple (str, str)
+        A 2-tuple of strings. The first string is the command to be executed.
+        The second string is the path to the command's output directory
+
+    Raises
+    ------
+    NotImplementedError
+        If any of the raw data input filepath type is not supported
+    ValueError
+        If the number of raw sequences an raw qual files are not the same
+        If the raw data object does not have any sequence file associated
+    """
+    from tempfile import mkdtemp
+
+    from qiita_core.qiita_settings import qiita_config
+    from qiita_db.metadata_template import PrepTemplate
+
+    # Get the filepaths from the raw data object
+    seqs_fps = []
+    qual_fps = []
+    for fp, fp_type = raw_data.get_filepaths():
+        if fp_type == "":
+            seqs_fps.append(fp)
+        elif fp_type == "":
+            qual_fps.append(fp)
+        else:
+            raise NotImplementedError("Raw data file type not supported %s"
+                                      % fp_type)
+
+    if len(seqs_fps) == 0:
+        raise ValueError("Sequence file not found on raw data %s"
+                         % raw_data.id)
+
+    if len(seqs_fps) != len(qual_fps):
+        raise ValueError("The number of qual files and the number of sequence "
+                         "files should match: %d != %d"
+                         % (len(seqs_fps), len(qual_fps)))
+
+    # Instantiate the prep template
+    prep_template = PrepTemplate(raw_data.id)
+
+    # The minimal QIIME mapping files should be written to a directory,
+    # so QIIME can consume them
+    prep_dir = mkdtemp(dir=qiita_config.working_dir, prefix='MMF_%s'
+                       % prep_template.id)
+
+    # Get the Minimal Mapping Files
+    mapping_fps = _get_qiime_minimal_mapping(prep_template, prep_dir)
+
+    # Create a temporary directory to store the split libraries output
+    output_dir = mkdtemp(dir=qiita_config.working_dir, prefix='sl_out')
+
+    # Add any other parameter needed to split libraries
+    params_str = params.to_str()
+
+    # We need to sort the filepaths to make sure that each lane's file is in
+    # the same order, so they match when passed to split_libraries.py
+    # All files should be prefixed with run_prefix, so the ordering is
+    # ensured to be correct
+    seqs_fps = sorted(seqs_fps)
+    qual_fps = sorted(qual_fps)
+    mapping_fps = sorted(mapping_fps)
+
+    # Create the split_libraries.py command, passing -d to store the qual files
+    cmd = str("split_libraries.py -d -f %s -q %s -m %s -o %s %s"
+              % (','.join(seqs_fps), ','.join(qual_fps), mapping_fps[0],
+                 output_dir, params_str))
+    return (cmd, output_dir)
+
+
+# ========================= PROCESS FASTQ FUNCTIONS ========================= #
 def _get_qiime_minimal_mapping(prep_template, out_dir):
     """Generates a minimal QIIME-compliant mapping file for split libraries
 
@@ -232,6 +316,7 @@ def _insert_preprocessed_data_fastq(study, params, raw_data, slq_out):
     raw_data.preprocessing_status = 'success'
 
 
+# ============================ GENERAL FUNCTIONS ============================ #
 class StudyPreprocessor(ParallelWrapper):
     def _construct_job_graph(self, study, raw_data, params):
         """Constructs the workflow graph to preprocess a study
