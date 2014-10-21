@@ -347,6 +347,9 @@ class StudyPreprocessor(ParallelWrapper):
         if filetype == "FASTQ":
             cmd_generator = _get_preprocess_fastq_cmd
             insert_preprocessed_data = _insert_preprocessed_data_fastq
+        elif filetype == "FASTA":
+            cmd_generator = _get_preprocess_fasta_cmd
+            insert_preprocessed_data = _insert_preprocessed_data_fasta
         else:
             raise NotImplementedError(
                 "Raw data %s cannot be preprocessed, filetype %s not supported"
