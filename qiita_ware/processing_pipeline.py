@@ -44,7 +44,7 @@ def _get_preprocess_fasta_cmd(raw_data, params):
     # Get the filepaths from the raw data object
     seqs_fps = []
     qual_fps = []
-    for fp, fp_type = raw_data.get_filepaths():
+    for fp, fp_type in raw_data.get_filepaths():
         if fp_type == "":
             seqs_fps.append(fp)
         elif fp_type == "":
@@ -335,6 +335,8 @@ class StudyPreprocessor(ParallelWrapper):
             The parameters to use for preprocessing
         """
         self.raw_data = raw_data
+        self.study = study
+        self.params = params
         self._logger = stderr
         # Change the raw_data status to preprocessing
         raw_data.preprocessing_status = 'preprocessing'
@@ -345,40 +347,41 @@ class StudyPreprocessor(ParallelWrapper):
         # should use
         filetype = raw_data.filetype
         if filetype == "FASTQ":
-            cmd_generator = _get_preprocess_fastq_cmd
-            insert_preprocessed_data = _insert_preprocessed_data_fastq
-        elif filetype == "FASTA":
-            cmd_generator = _get_preprocess_fasta_cmd
-            insert_preprocessed_data = _insert_preprocessed_data_fasta
+            self._construct_fastq_workflow()
+            # cmd_generator = _get_preprocess_fastq_cmd
+            # insert_preprocessed_data = _insert_preprocessed_data_fastq
+        # elif filetype == "FASTA":
+        #     cmd_generator = _get_preprocess_fasta_cmd
+        #     insert_preprocessed_data = _insert_preprocessed_data_fasta
         else:
             raise NotImplementedError(
                 "Raw data %s cannot be preprocessed, filetype %s not supported"
                 % (raw_data.id, filetype))
 
         # Generate the command
-        cmd, output_dir = cmd_generator(raw_data, params)
-        self._job_graph.add_node(preprocess_node, job=(cmd,),
-                                 requires_deps=False)
+        # cmd, output_dir = cmd_generator(raw_data, params)
+        # self._job_graph.add_node(preprocess_node, job=(cmd,),
+        #                          requires_deps=False)
 
-        # This step is currently only for data types in which we need to store,
-        # demultiplexed sequences. Since it is the only supported data type at
-        # this point, it is ok the leave it here. However, as new data types
-        # become available, we will need to think a better way of doing this.
-        demux_node = "GEN_DEMUX_FILE"
-        self._job_graph.add_node(demux_node,
-                                 job=(_generate_demux_file, output_dir),
-                                 requires_deps=False)
-        self._job_graph.add_edge(preprocess_node, demux_node)
+        # # This step is currently only for data types in which we need to store,
+        # # demultiplexed sequences. Since it is the only supported data type at
+        # # this point, it is ok the leave it here. However, as new data types
+        # # become available, we will need to think a better way of doing this.
+        # demux_node = "GEN_DEMUX_FILE"
+        # self._job_graph.add_node(demux_node,
+        #                          job=(_generate_demux_file, output_dir),
+        #                          requires_deps=False)
+        # self._job_graph.add_edge(preprocess_node, demux_node)
 
-        # STEP 2: Add preprocessed data to DB
-        insert_preprocessed_node = "INSERT_PREPROCESSED"
-        self._job_graph.add_node(insert_preprocessed_node,
-                                 job=(insert_preprocessed_data, study, params,
-                                      raw_data, output_dir),
-                                 requires_deps=False)
-        self._job_graph.add_edge(demux_node, insert_preprocessed_node)
+        # # STEP 2: Add preprocessed data to DB
+        # insert_preprocessed_node = "INSERT_PREPROCESSED"
+        # self._job_graph.add_node(insert_preprocessed_node,
+        #                          job=(insert_preprocessed_data, study, params,
+        #                               raw_data, output_dir),
+        #                          requires_deps=False)
+        # self._job_graph.add_edge(demux_node, insert_preprocessed_node)
 
-        self._dirpaths_to_remove.append(output_dir)
+        # self._dirpaths_to_remove.append(output_dir)
 
     def _failure_callback(self, msg=None):
         """Callback to execute in case that any of the job nodes failed
@@ -387,3 +390,43 @@ class StudyPreprocessor(ParallelWrapper):
         """
         self.raw_data.preprocessing_status = 'failed: %s' % msg
         LogEntry.create('Fatal', msg, info={'raw_data': self.raw_data.id})
+
+    def _construct_fastq_workflow(self):
+        """Constructs the workflow graph to preprocess a fastq raw_data
+
+        The steps performed to preprocess the raw data are:
+        1) Execute split_libraries_fastq.py
+        2) Generate the HDF5 demultiplexed file
+        3) Insert the preprocessed data to the database
+
+        Parameters
+        ----------
+        study : Study
+            The study to preprocess
+        raw_data : RawData
+            The raw data to use for the preprocessing
+        params : PreprocessedIlluminaParams
+            The parameters to use for preprocessing
+        """
+        # Step 1: preprocess the raw_data
+        preprocess_node = "PREPROCESS"
+        cmd, output_dir = _get_preprocess_fastq_cmd(raw_data, params)
+        self._job_graph.add_node(preprocess_node, job=(cmd,),
+                                 requires_deps=False)
+
+        # Step 2: create the HDF5 demultiplexed file
+        demux_node = "GEN_DEMUX_FILE"
+        self._job_graph.add_node(demux_node,
+                                 job=(_generate_demux_file, output_dir),
+                                 requires_deps=False)
+        self._job_graph.add_edge(preprocess_node, demux_node)
+
+        # Step 3: add the preprocessed data to the DB
+        insert_preprocessed_node = "INSERT_PREPROCESSED"
+        self._job_graph.add_node(insert_preprocessed_node,
+                                 job=(insert_preprocessed_data, study, params,
+                                      raw_data, output_dir),
+                                 requires_deps=False)
+        self._job_graph.add_edge(demux_node, insert_preprocessed_node)
+
+        self._dirpaths_to_remove.append(output_dir)
