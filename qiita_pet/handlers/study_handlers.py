@@ -232,7 +232,7 @@ class StudyDescriptionHandler(BaseHandler):
         try:
             # currently hardcoding the study_ids to be an array but not sure
             # if this will ever be an actual array via the web interface
-            raw_data = RawData.create(filetype, filepaths, [study], 1,
+            raw_data = RawData.create(filetype, [study], 1, filepaths,
                                       investigation_type)
         except (TypeError, QiitaDBColumnError, QiitaDBExecutionError,
                 IOError), e:
@@ -253,7 +253,7 @@ class StudyDescriptionHandler(BaseHandler):
             self.display_template(int(study_id), msg)
             return
 
-        msg = "Your samples where processed"
+        msg = "Your samples were processed"
         self.display_template(int(study_id), msg)
 
 
