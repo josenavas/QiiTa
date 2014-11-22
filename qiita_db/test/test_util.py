@@ -181,7 +181,7 @@ class DBUtilTests(TestCase):
         """Tests that get_filetypes works with valid arguments"""
 
         obs = get_filetypes()
-        exp = {'SFF': 1, 'FASTA-Sanger': 2, 'FASTQ': 3}
+        exp = {'SFF': 1, 'FASTA-Sanger': 2, 'FASTQ': 3, 'WGS-FASTQ': 4}
         self.assertEqual(obs, exp)
 
         obs = get_filetypes(key='filetype_id')
@@ -257,7 +257,8 @@ class DBUtilTests(TestCase):
 
     def test_get_processed_params_tables(self):
         obs = get_processed_params_tables()
-        self.assertEqual(obs, ['processed_params_sortmerna',
+        self.assertEqual(obs, ['processed_params_assembler',
+                               'processed_params_sortmerna',
                                'processed_params_uclust'])
 
     def test_insert_filepaths(self):
