@@ -390,3 +390,13 @@ INSERT INTO qiita.term (term_id, ontology_id, term, identifier, definition, name
 INSERT INTO qiita.term (term_id, ontology_id, term, identifier, definition, namespace, is_obsolete, is_root_term, is_leaf) VALUES (2052508985, 999999999, E'Exome Sequencing', E'ENA:0000071', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO qiita.term (term_id, ontology_id, term, identifier, definition, namespace, is_obsolete, is_root_term, is_leaf) VALUES (2052508986, 999999999, E'Pooled Clone Sequencing', E'ENA:0000072', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO qiita.term (term_id, ontology_id, term, identifier, definition, namespace, is_obsolete, is_root_term, is_leaf) VALUES (2052508987, 999999999, E'Other', E'ENA:0000069', NULL, NULL, NULL, NULL, NULL);
+
+-- Insert storage conditions
+INSERT INTO qiita.storage_conditions (temperature, todo_fields) VALUES (-80, '20% glycerol in mega medium');
+
+-- Insert culture collection
+INSERT INTO qiita.culture_collection (culture_collection_name, todo_fields) VALUES ('ATCC', 'Some culture collection information');
+
+-- Insert a strain
+INSERT INTO qiita.strain (unofficial_name, sample_id, isolation_date, isolation_description, storage_conditions_id, culture_collection_name) VALUES 
+	('Bacteroides thetaiotaomicron VPI-5482, B. theta VPI-5482', '1.SKB1.640202', '2011-11-11 13:00', 'A description of how the sample was isolated', 1, 'ATCC');

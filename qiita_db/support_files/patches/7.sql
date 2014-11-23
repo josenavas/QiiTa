@@ -88,4 +88,8 @@ ALTER TABLE qiita.strain ADD CONSTRAINT fk_strain_required_sample_info FOREIGN K
 
 ALTER TABLE qiita.strain ADD CONSTRAINT fk_strain_filepath FOREIGN KEY ( sequence_filepath_id ) REFERENCES qiita.filepath( filepath_id )    ;
 
+-- Add the new filetype
 INSERT INTO qiita.filetype (type) VALUES ('WGS-FASTQ');
+
+-- Add a new mountpoint for the strains
+INSERT INTO qiita.data_directory (data_type, mountpoint, subdirectory, active) VALUES ('strain', 'strains', '', true);
