@@ -838,6 +838,9 @@ class TestSampleTemplate(TestCase):
         st = SampleTemplate.create(self.metadata, self.new_study)
         self.assertEqual(st.get_filepaths()[0][0], exp)
 
+    def test_strains(self):
+        self.assertEqual(self.tester.strains, [1])
+
 
 @qiita_test_checker()
 class TestPrepTemplate(TestCase):

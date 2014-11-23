@@ -1230,6 +1230,18 @@ class SampleTemplate(MetadataTemplate):
         """
         return self._id
 
+    @property
+    def strains(self):
+        conn_handler = SQLConnectionHandler()
+
+        sample_ids = list(self._get_sample_ids(conn_handler))
+
+        strains = conn_handler.execute_fetchall(
+            "SELECT strain_id FROM qiita.strain WHERE sample_id "
+            "IN ({0})".format(', '.join(["%s"] * len(sample_ids))),
+            sample_ids)
+        return [s[0] for s in strains]
+
 
 class PrepTemplate(MetadataTemplate):
     r"""Represent the PrepTemplate of a raw dat. Provides access to the
