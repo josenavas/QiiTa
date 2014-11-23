@@ -88,6 +88,12 @@ ALTER TABLE qiita.strain ADD CONSTRAINT fk_strain_required_sample_info FOREIGN K
 
 ALTER TABLE qiita.strain ADD CONSTRAINT fk_strain_filepath FOREIGN KEY ( sequence_filepath_id ) REFERENCES qiita.filepath( filepath_id )    ;
 
+ALTER TABLE qiita.prep_template ADD strain_id bigint  ;
+
+CREATE INDEX idx_prep_template_1 ON qiita.prep_template ( strain_id ) ;
+
+ALTER TABLE qiita.prep_template ADD CONSTRAINT fk_prep_template_strain FOREIGN KEY ( strain_id ) REFERENCES qiita.strain( strain_id )    ;
+
 -- Add the new filetype
 INSERT INTO qiita.filetype (type) VALUES ('WGS-FASTQ');
 

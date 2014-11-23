@@ -457,7 +457,7 @@ table {
 	analysis_sample references required_sample_info ( sample_id )</title>
 </path>
 <text x='163' y='1545' transform='rotate(90 163,1545)' title='Foreign Key fk_analysis_sample
-	analysis_sample references required_sample_info ( sample_id )' style='fill:#a1a0a0;'>sample_id</text><path transform='translate(7,0)' marker-start='url(#foot)' marker-end='url(#arrow)'    d='M 1275 885 L 1275,660' >
+	analysis_sample references required_sample_info ( sample_id )' style='fill:#a1a0a0;'>sample_id</text><path transform='translate(7,0)' marker-start='url(#foot)' marker-end='url(#arrow)'    d='M 1275 885 L 1275,675' >
 	<title>Foreign Key fk_prep_template_id
 	prep_template_preprocessed_data references prep_template ( prep_template_id )</title>
 </path>
@@ -707,17 +707,7 @@ table {
 	common_prep_info references prep_template ( prep_template_id )</title>
 </path>
 <text x='1213' y='480' transform='rotate(90 1213,480)' title='Foreign Key fk_prep_template
-	common_prep_info references prep_template ( prep_template_id )' style='fill:#a1a0a0;'>prep_template_id</text><path transform='translate(7,0)' marker-start='url(#foot)' marker-end='url(#arrow)'    d='M 1215 660 L 1215,1267 Q 1215,1275 1207,1275 L 787,1275 Q 780,1275 780,1282 L 780,1290' >
-	<title>Foreign Key fk_prep_template_data_type
-	prep_template references data_type ( data_type_id )</title>
-</path>
-<text x='1228' y='660' transform='rotate(90 1228,660)' title='Foreign Key fk_prep_template_data_type
-	prep_template references data_type ( data_type_id )' style='fill:#a1a0a0;'>data_type_id</text><path transform='translate(7,0)' marker-start='url(#foot)' marker-end='url(#arrow)'    d='M 1320 660 L 1320,765' >
-	<title>Foreign Key fk_prep_template_raw_data
-	prep_template references raw_data ( raw_data_id )</title>
-</path>
-<text x='1333' y='660' transform='rotate(90 1333,660)' title='Foreign Key fk_prep_template_raw_data
-	prep_template references raw_data ( raw_data_id )' style='fill:#a1a0a0;'>raw_data_id</text><path transform='translate(7,0)' marker-start='url(#foot)' marker-end='url(#arrow)'    d='M 1395 1530 L 1395,1425' >
+	common_prep_info references prep_template ( prep_template_id )' style='fill:#a1a0a0;'>prep_template_id</text><path transform='translate(7,0)' marker-start='url(#foot)' marker-end='url(#arrow)'    d='M 1395 1530 L 1395,1425' >
 	<title>Foreign Key fk_processed_data_metadata
 	processed_data_metadata references processed_data ( processed_data_id )</title>
 </path>
@@ -747,7 +737,22 @@ table {
 	strain references filepath ( sequence_filepath_id -> filepath_id )</title>
 </path>
 <text x='1779' y='205' transform='rotate(0 1779,205)' title='Foreign Key fk_strain_filepath
-	strain references filepath ( sequence_filepath_id -> filepath_id )' style='fill:#a1a0a0;'>sequence_filepath_id</text><!-- ============= Table 'controlled_vocab_values' ============= -->
+	strain references filepath ( sequence_filepath_id -> filepath_id )' style='fill:#a1a0a0;'>sequence_filepath_id</text><path transform='translate(7,0)' marker-start='url(#foot)' marker-end='url(#arrow)'    d='M 1215 675 L 1215,1267 Q 1215,1275 1207,1275 L 787,1275 Q 780,1275 780,1282 L 780,1290' >
+	<title>Foreign Key fk_prep_template_data_type
+	prep_template references data_type ( data_type_id )</title>
+</path>
+<text x='1228' y='675' transform='rotate(90 1228,675)' title='Foreign Key fk_prep_template_data_type
+	prep_template references data_type ( data_type_id )' style='fill:#a1a0a0;'>data_type_id</text><path transform='translate(7,0)' marker-start='url(#foot)' marker-end='url(#arrow)'    d='M 1320 675 L 1320,765' >
+	<title>Foreign Key fk_prep_template_raw_data
+	prep_template references raw_data ( raw_data_id )</title>
+</path>
+<text x='1333' y='675' transform='rotate(90 1333,675)' title='Foreign Key fk_prep_template_raw_data
+	prep_template references raw_data ( raw_data_id )' style='fill:#a1a0a0;'>raw_data_id</text><path transform='translate(7,0)' marker-start='url(#foot)' marker-end='url(#arrow)'  style='stroke-dasharray:4,2;'  d='M 1335 555 L 1492,555 Q 1500,555 1500,547 L 1500,82 Q 1500,75 1507,75 L 1890,75' >
+	<title>Foreign Key fk_prep_template_strain
+	prep_template references strain ( strain_id )</title>
+</path>
+<text x='1342' y='550' transform='rotate(0 1342,550)' title='Foreign Key fk_prep_template_strain
+	prep_template references strain ( strain_id )' style='fill:#a1a0a0;'>strain_id</text><!-- ============= Table 'controlled_vocab_values' ============= -->
 <rect class='table' x='45' y='1823' width='150' height='120' rx='7' ry='7' />
 <path d='M 45.50 1849.50 L 45.50 1830.50 Q 45.50 1823.50 52.50 1823.50 L 187.50 1823.50 Q 194.50 1823.50 194.50 1830.50 L 194.50 1849.50 L45.50 1849.50 ' style='fill:url(#tableHeaderGradient0); stroke:none;' />
 <a xlink:href='#controlled_vocab_values'><text x='53' y='1837' class='tableTitle'>controlled_vocab_values</text><title>Table qiita.controlled_vocab_values</title></a>
@@ -1784,26 +1789,6 @@ Other fields to be described by the Gordon Lab&#046;</title></a>
 <a xlink:href='#culture_collection.culture_collection_name'><use id='ref' x='2298' y='176' xlink:href='#ref'/><title>Referred by strain ( culture_collection_name ) </title></a>
   <a xlink:href='#culture_collection.todo_fields'><text x='2163' y='202'>todo_fields</text><title>todo_fields varchar</title></a>
 
-<!-- ============= Table 'prep_template' ============= -->
-<rect class='table' x='1185' y='533' width='150' height='120' rx='7' ry='7' />
-<path d='M 1185.50 559.50 L 1185.50 540.50 Q 1185.50 533.50 1192.50 533.50 L 1327.50 533.50 Q 1334.50 533.50 1334.50 540.50 L 1334.50 559.50 L1185.50 559.50 ' style='fill:url(#tableHeaderGradient2); stroke:none;' />
-<a xlink:href='#prep_template'><text x='1221' y='547' class='tableTitle'>prep_template</text><title>Table qiita.prep_template</title></a>
-  <use id='nn' x='1187' y='567' xlink:href='#nn'/><a xlink:href='#prep_template.prep_template_id'><use id='pk' x='1187' y='566' xlink:href='#pk'/><title>Primary Key  ( prep_template_id ) </title></a>
-<a xlink:href='#prep_template.prep_template_id'><text x='1203' y='577'>prep_template_id</text><title>prep_template_id bigserial not null</title></a>
-<a xlink:href='#prep_template.prep_template_id'><use id='ref' x='1323' y='566' xlink:href='#ref'/><title>Referred by common_prep_info ( prep_template_id ) 
-Referred by prep_columns ( prep_template_id ) 
-Referred by prep_template_filepath ( prep_template_id ) 
-Referred by prep_template_preprocessed_data ( prep_template_id ) </title></a>
-  <use id='nn' x='1187' y='582' xlink:href='#nn'/><a xlink:href='#prep_template.data_type_id'><use id='idx' x='1187' y='581' xlink:href='#idx'/><title>Index  ( data_type_id ) </title></a>
-<a xlink:href='#prep_template.data_type_id'><text x='1203' y='592'>data_type_id</text><title>data_type_id bigint not null</title></a>
-<a xlink:href='#prep_template.data_type_id'><use id='fk' x='1323' y='581' xlink:href='#fk'/><title>References data_type ( data_type_id ) </title></a>
-  <use id='nn' x='1187' y='597' xlink:href='#nn'/><a xlink:href='#prep_template.raw_data_id'><use id='idx' x='1187' y='596' xlink:href='#idx'/><title>Index  ( raw_data_id ) </title></a>
-<a xlink:href='#prep_template.raw_data_id'><text x='1203' y='607'>raw_data_id</text><title>raw_data_id bigint not null</title></a>
-<a xlink:href='#prep_template.raw_data_id'><use id='fk' x='1323' y='596' xlink:href='#fk'/><title>References raw_data ( raw_data_id ) </title></a>
-  <use id='nn' x='1187' y='612' xlink:href='#nn'/><a xlink:href='#prep_template.preprocessing_status'><text x='1203' y='622'>preprocessing_status</text><title>preprocessing_status varchar not null default &#039;not&#095;preprocessed&#039;</title></a>
-  <a xlink:href='#prep_template.investigation_type'><text x='1203' y='637'>investigation_type</text><title>investigation_type varchar
-The investigation type &#040;e&#046;g&#046;&#044; one of the values from EBI&#039;s set of known types&#041;</title></a>
-
 <!-- ============= Table 'processed_data_metadata' ============= -->
 <rect class='table' x='1380' y='1538' width='165' height='165' rx='7' ry='7' />
 <path d='M 1380.50 1564.50 L 1380.50 1545.50 Q 1380.50 1538.50 1387.50 1538.50 L 1537.50 1538.50 Q 1544.50 1538.50 1544.50 1545.50 L 1544.50 1564.50 L1380.50 1564.50 ' style='fill:url(#tableHeaderGradient2); stroke:none;' />
@@ -1847,6 +1832,8 @@ The investigation type &#040;e&#046;g&#046;&#044; one of the values from EBI&#03
 <a xlink:href='#strain'><text x='1972' y='52' class='tableTitle'>strain</text><title>Table qiita.strain</title></a>
   <use id='nn' x='1907' y='72' xlink:href='#nn'/><a xlink:href='#strain.strain_id'><use id='pk' x='1907' y='71' xlink:href='#pk'/><title>Primary Key  ( strain_id ) </title></a>
 <a xlink:href='#strain.strain_id'><text x='1923' y='82'>strain_id</text><title>strain_id bigserial not null</title></a>
+<a xlink:href='#strain.strain_id'><use id='ref' x='2058' y='71' xlink:href='#ref'/><title>Referred by prep_template ( strain_id ) 
+Referred by prep_template ( strain_id ) </title></a>
   <use id='nn' x='1907' y='87' xlink:href='#nn'/><a xlink:href='#strain.unofficial_name'><use id='unq' x='1907' y='86' xlink:href='#unq'/><title>Unique Index  ( unofficial_name ) </title></a>
 <a xlink:href='#strain.unofficial_name'><text x='1923' y='97'>unofficial_name</text><title>unofficial_name varchar not null</title></a>
   <a xlink:href='#strain.official_name'><text x='1923' y='112'>official_name</text><title>official_name varchar</title></a>
@@ -1869,6 +1856,29 @@ Potentially create a new table in which each level is it&#039;s own column&#044;
 <a xlink:href='#strain.culture_collection_name'><use id='fk' x='2058' y='206' xlink:href='#fk'/><title>References culture_collection ( culture_collection_name ) </title></a>
   <a xlink:href='#strain.todo_properties'><text x='1923' y='232'>todo_properties</text><title>todo_properties varchar
 The complete list of properties is still to be defined&#044; so just putting a placeholder here for now&#044; and once we have more information we can put them here&#046;</title></a>
+
+<!-- ============= Table 'prep_template' ============= -->
+<rect class='table' x='1185' y='533' width='150' height='135' rx='7' ry='7' />
+<path d='M 1185.50 559.50 L 1185.50 540.50 Q 1185.50 533.50 1192.50 533.50 L 1327.50 533.50 Q 1334.50 533.50 1334.50 540.50 L 1334.50 559.50 L1185.50 559.50 ' style='fill:url(#tableHeaderGradient2); stroke:none;' />
+<a xlink:href='#prep_template'><text x='1221' y='547' class='tableTitle'>prep_template</text><title>Table qiita.prep_template</title></a>
+  <use id='nn' x='1187' y='567' xlink:href='#nn'/><a xlink:href='#prep_template.prep_template_id'><use id='pk' x='1187' y='566' xlink:href='#pk'/><title>Primary Key  ( prep_template_id ) </title></a>
+<a xlink:href='#prep_template.prep_template_id'><text x='1203' y='577'>prep_template_id</text><title>prep_template_id bigserial not null</title></a>
+<a xlink:href='#prep_template.prep_template_id'><use id='ref' x='1323' y='566' xlink:href='#ref'/><title>Referred by common_prep_info ( prep_template_id ) 
+Referred by prep_columns ( prep_template_id ) 
+Referred by prep_template_filepath ( prep_template_id ) 
+Referred by prep_template_preprocessed_data ( prep_template_id ) </title></a>
+  <use id='nn' x='1187' y='582' xlink:href='#nn'/><a xlink:href='#prep_template.data_type_id'><use id='idx' x='1187' y='581' xlink:href='#idx'/><title>Index  ( data_type_id ) </title></a>
+<a xlink:href='#prep_template.data_type_id'><text x='1203' y='592'>data_type_id</text><title>data_type_id bigint not null</title></a>
+<a xlink:href='#prep_template.data_type_id'><use id='fk' x='1323' y='581' xlink:href='#fk'/><title>References data_type ( data_type_id ) </title></a>
+  <use id='nn' x='1187' y='597' xlink:href='#nn'/><a xlink:href='#prep_template.raw_data_id'><use id='idx' x='1187' y='596' xlink:href='#idx'/><title>Index  ( raw_data_id ) </title></a>
+<a xlink:href='#prep_template.raw_data_id'><text x='1203' y='607'>raw_data_id</text><title>raw_data_id bigint not null</title></a>
+<a xlink:href='#prep_template.raw_data_id'><use id='fk' x='1323' y='596' xlink:href='#fk'/><title>References raw_data ( raw_data_id ) </title></a>
+  <use id='nn' x='1187' y='612' xlink:href='#nn'/><a xlink:href='#prep_template.preprocessing_status'><text x='1203' y='622'>preprocessing_status</text><title>preprocessing_status varchar not null default &#039;not&#095;preprocessed&#039;</title></a>
+  <a xlink:href='#prep_template.investigation_type'><text x='1203' y='637'>investigation_type</text><title>investigation_type varchar
+The investigation type &#040;e&#046;g&#046;&#044; one of the values from EBI&#039;s set of known types&#041;</title></a>
+  <a xlink:href='#prep_template.strain_id'><use id='idx' x='1187' y='641' xlink:href='#idx'/><title>Index  ( strain_id ) </title></a>
+<a xlink:href='#prep_template.strain_id'><text x='1203' y='652'>strain_id</text><title>strain_id bigint</title></a>
+<a xlink:href='#prep_template.strain_id'><use id='fk' x='1323' y='641' xlink:href='#fk'/><title>References strain ( strain_id ) </title></a>
 
 </g></svg>
 
@@ -5136,64 +5146,6 @@ Controlled Vocabulary </td>
 <br/><br/>
 <table class='bordered'>
 <thead>
-<tr><th colspan='3'><a name='prep_template'>Table prep_template</a></th></tr>
-</thead>
-<tbody>
-	<tr>
-		<td><a name='prep_template.prep_template_id'>prep&#095;template&#095;id</a></td>
-		<td> bigserial  NOT NULL  </td>
-		<td>  </td>
-	</tr>
-	<tr>
-		<td><a name='prep_template.data_type_id'>data&#095;type&#095;id</a></td>
-		<td> bigint  NOT NULL  </td>
-		<td>  </td>
-	</tr>
-	<tr>
-		<td><a name='prep_template.raw_data_id'>raw&#095;data&#095;id</a></td>
-		<td> bigint  NOT NULL  </td>
-		<td>  </td>
-	</tr>
-	<tr>
-		<td><a name='prep_template.preprocessing_status'>preprocessing&#095;status</a></td>
-		<td> varchar  NOT NULL  DEFO 'not_preprocessed' </td>
-		<td>  </td>
-	</tr>
-	<tr>
-		<td><a name='prep_template.investigation_type'>investigation&#095;type</a></td>
-		<td> varchar   </td>
-		<td> The investigation type &#040;e&#046;g&#046;&#044; one of the values from EBI&#039;s set of known types&#041; </td>
-	</tr>
-<tr><th colspan='3'><b>Indexes</b></th></tr>
-	<tr>		<td>pk&#095;prep&#095;template primary key</td>
-		<td> ON prep&#095;template&#095;id</td>
-		<td>  </td>
-	</tr>
-	<tr>		<td>idx&#095;prep&#095;template </td>
-		<td> ON data&#095;type&#095;id</td>
-		<td>  </td>
-	</tr>
-	<tr>		<td>idx&#095;prep&#095;template&#095;0 </td>
-		<td> ON raw&#095;data&#095;id</td>
-		<td>  </td>
-	</tr>
-<tr><th colspan='3'><b>Foreign Keys</b></th></tr>
-	<tr>
-		<td>fk_prep_template_data_type</td>
-		<td > ( data&#095;type&#095;id ) ref <a href='#data&#095;type'>data&#095;type</a> (data&#095;type&#095;id) </td>
-		<td>  </td>
-	</tr>
-	<tr>
-		<td>fk_prep_template_raw_data</td>
-		<td > ( raw&#095;data&#095;id ) ref <a href='#raw&#095;data'>raw&#095;data</a> (raw&#095;data&#095;id) </td>
-		<td>  </td>
-	</tr>
-</tbody>
-</table>
-
-<br/><br/>
-<table class='bordered'>
-<thead>
 <tr><th colspan='3'><a name='processed_data_metadata'>Table processed_data_metadata</a></th></tr>
 </thead>
 <tbody>
@@ -5430,6 +5382,78 @@ Potentially create a new table in which each level is it&#039;s own column&#044;
 	<tr>
 		<td>fk_strain_filepath</td>
 		<td > ( sequence&#095;filepath&#095;id ) ref <a href='#filepath'>filepath</a> (filepath&#095;id) </td>
+		<td>  </td>
+	</tr>
+</tbody>
+</table>
+
+<br/><br/>
+<table class='bordered'>
+<thead>
+<tr><th colspan='3'><a name='prep_template'>Table prep_template</a></th></tr>
+</thead>
+<tbody>
+	<tr>
+		<td><a name='prep_template.prep_template_id'>prep&#095;template&#095;id</a></td>
+		<td> bigserial  NOT NULL  </td>
+		<td>  </td>
+	</tr>
+	<tr>
+		<td><a name='prep_template.data_type_id'>data&#095;type&#095;id</a></td>
+		<td> bigint  NOT NULL  </td>
+		<td>  </td>
+	</tr>
+	<tr>
+		<td><a name='prep_template.raw_data_id'>raw&#095;data&#095;id</a></td>
+		<td> bigint  NOT NULL  </td>
+		<td>  </td>
+	</tr>
+	<tr>
+		<td><a name='prep_template.preprocessing_status'>preprocessing&#095;status</a></td>
+		<td> varchar  NOT NULL  DEFO 'not_preprocessed' </td>
+		<td>  </td>
+	</tr>
+	<tr>
+		<td><a name='prep_template.investigation_type'>investigation&#095;type</a></td>
+		<td> varchar   </td>
+		<td> The investigation type &#040;e&#046;g&#046;&#044; one of the values from EBI&#039;s set of known types&#041; </td>
+	</tr>
+	<tr>
+		<td><a name='prep_template.strain_id'>strain&#095;id</a></td>
+		<td> bigint   </td>
+		<td>  </td>
+	</tr>
+<tr><th colspan='3'><b>Indexes</b></th></tr>
+	<tr>		<td>pk&#095;prep&#095;template primary key</td>
+		<td> ON prep&#095;template&#095;id</td>
+		<td>  </td>
+	</tr>
+	<tr>		<td>idx&#095;prep&#095;template </td>
+		<td> ON data&#095;type&#095;id</td>
+		<td>  </td>
+	</tr>
+	<tr>		<td>idx&#095;prep&#095;template&#095;0 </td>
+		<td> ON raw&#095;data&#095;id</td>
+		<td>  </td>
+	</tr>
+	<tr>		<td>idx&#095;prep&#095;template&#095;1 </td>
+		<td> ON strain&#095;id</td>
+		<td>  </td>
+	</tr>
+<tr><th colspan='3'><b>Foreign Keys</b></th></tr>
+	<tr>
+		<td>fk_prep_template_data_type</td>
+		<td > ( data&#095;type&#095;id ) ref <a href='#data&#095;type'>data&#095;type</a> (data&#095;type&#095;id) </td>
+		<td>  </td>
+	</tr>
+	<tr>
+		<td>fk_prep_template_raw_data</td>
+		<td > ( raw&#095;data&#095;id ) ref <a href='#raw&#095;data'>raw&#095;data</a> (raw&#095;data&#095;id) </td>
+		<td>  </td>
+	</tr>
+	<tr>
+		<td>fk_prep_template_strain</td>
+		<td > ( strain&#095;id ) ref <a href='#strain'>strain</a> (strain&#095;id) </td>
 		<td>  </td>
 	</tr>
 </tbody>
