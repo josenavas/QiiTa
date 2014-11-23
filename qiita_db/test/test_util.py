@@ -447,7 +447,7 @@ class DBUtilTests(TestCase):
             "true), ('raw_data', 'raw_data', 'tmp', false)")
 
         # this should have been updated
-        exp = [(10, join(get_db_files_base_dir(), 'analysis', 'tmp'))]
+        exp = [(11, join(get_db_files_base_dir(), 'analysis', 'tmp'))]
         obs = get_mountpoint("analysis")
         self.assertEqual(obs, exp)
 
@@ -462,7 +462,7 @@ class DBUtilTests(TestCase):
 
         # testing multi returns
         exp = [(5, join(get_db_files_base_dir(), 'raw_data', '')),
-               (11, join(get_db_files_base_dir(), 'raw_data', 'tmp'))]
+               (12, join(get_db_files_base_dir(), 'raw_data', 'tmp'))]
         obs = get_mountpoint("raw_data", retrive_all=True)
         self.assertEqual(obs, exp)
 

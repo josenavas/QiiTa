@@ -952,8 +952,8 @@ class TestPrepTemplate(TestCase):
         obs = self.conn_handler.execute_fetchall(
             "SELECT * FROM qiita.prep_template WHERE prep_template_id=2")
         # prep_template_id, data_type_id, raw_data_id, preprocessing_status,
-        # investigation_type
-        self.assertEqual(obs, [[2, 2, 3, 'not_preprocessed', None]])
+        # investigation_type, strain_id
+        self.assertEqual(obs, [[2, 2, 3, 'not_preprocessed', None, None]])
 
         # The relevant rows to common_prep_info have been added.
         obs = self.conn_handler.execute_fetchall(
@@ -1009,8 +1009,8 @@ class TestPrepTemplate(TestCase):
         obs = self.conn_handler.execute_fetchall(
             "SELECT * FROM qiita.prep_template WHERE prep_template_id=2")
         # prep_template_id, data_type_id, raw_data_id, preprocessing_status,
-        # investigation_type
-        self.assertEqual(obs, [[2, 2, 3, 'not_preprocessed', None]])
+        # investigation_type, strain_id
+        self.assertEqual(obs, [[2, 2, 3, 'not_preprocessed', None, None]])
 
         # The relevant rows to common_prep_info have been added.
         obs = self.conn_handler.execute_fetchall(
