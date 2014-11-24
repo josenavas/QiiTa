@@ -97,5 +97,8 @@ ALTER TABLE qiita.prep_template ADD CONSTRAINT fk_prep_template_strain FOREIGN K
 -- Add the new filetype
 INSERT INTO qiita.filetype (type) VALUES ('WGS-FASTQ');
 
+-- Add the new data type
+INSERT INTO qiita.data_type (data_type) VALUES ('Single Genome');
+
 -- Add a new mountpoint for the strains
 INSERT INTO qiita.data_directory (data_type, mountpoint, subdirectory, active) VALUES ('strain', 'strains', '', true);
