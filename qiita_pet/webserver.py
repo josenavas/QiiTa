@@ -33,6 +33,8 @@ from qiita_pet.handlers.compute import (
 from qiita_pet.handlers.preprocessing_handlers import PreprocessHandler
 from qiita_pet.handlers.stats import StatsHandler
 from qiita_pet.handlers.download import DownloadHandler
+from qiita_pet.handlers.strain_handlers import (CreateStrainHandler,
+                                                CreateStrainAJAX)
 from qiita_db.util import get_mountpoint
 
 define("port", default=8888, help="run on the given port", type=int)
@@ -86,6 +88,8 @@ class Application(tornado.web.Application):
             (r"/check_study/", CreateStudyAJAX),
             (r"/stats/", StatsHandler),
             (r"/download/(.*)", DownloadHandler),
+            (r"/create_strain/(.*)", CreateStrainHandler),
+            (r"/check_strain/", CreateStrainAJAX),
             # 404 PAGE MUST BE LAST IN THIS LIST!
             (r".*", NoPageHandler)
         ]
