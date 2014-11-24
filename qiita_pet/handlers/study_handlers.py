@@ -42,6 +42,7 @@ from qiita_db.exceptions import (QiitaDBColumnError, QiitaDBExecutionError,
                                  QiitaDBDuplicateError, QiitaDBUnknownIDError,
                                  QiitaDBDuplicateHeaderError)
 from qiita_db.ontology import Ontology
+from qiita_db.strain import Strain
 
 from .base_handlers import BaseHandler
 
@@ -416,9 +417,12 @@ class StudyDescriptionHandler(BaseHandler):
         pi_link = study_person_linkifier((princ_inv.email, princ_inv.name))
 
         if SampleTemplate.exists(study.id):
-            sample_templates = SampleTemplate(study.id).get_filepaths()
+            st = SampleTemplate(study.id)
+            sample_templates = st.get_filepaths()
+            strains = [Strain(st_id) for st_id in st.strains]
         else:
             sample_templates = []
+            strains = []
 
         self.render('study_description.html', user=self.current_user,
                     study_title=study.title, study_info=study.info,
@@ -441,7 +445,8 @@ class StudyDescriptionHandler(BaseHandler):
                                      for pmid in study.pmids]),
                     principal_investigator=pi_link,
                     is_local_request=is_local_request,
-                    sample_templates=sample_templates)
+                    sample_templates=sample_templates,
+                    strains=strains)
 
     @authenticated
     def get(self, study_id):
@@ -454,8 +459,10 @@ class StudyDescriptionHandler(BaseHandler):
             check_access(User(self.current_user), study,
                          raise_error=True)
 
-        self.display_template(study, "", 'info',
-                              tab_to_display="study_information_tab")
+        tab_to_display = self.get_argument("tab_to_display",
+                                           "study_information_tab")
+
+        self.display_template(study, "", 'info', tab_to_display=tab_to_display)
 
     @authenticated
     @coroutine

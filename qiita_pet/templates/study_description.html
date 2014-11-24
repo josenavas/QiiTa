@@ -49,6 +49,7 @@ function newInvestigationTypeChanged(rawDataID, isEdit){
     }
   }
 }
+
 </script>
 {% end %}
 
@@ -59,8 +60,6 @@ function newInvestigationTypeChanged(rawDataID, isEdit){
 {% from os.path import basename %}
 {% from qiita_core.qiita_settings import qiita_config %}
 {% from qiita_db.data import PreprocessedData, ProcessedData %}
-
-
 
 <table border="0" style="vertical-align: middle; text-align:center; align:center;">
   <tr>
@@ -177,8 +176,7 @@ function newInvestigationTypeChanged(rawDataID, isEdit){
             <h4>Add prep template to this raw data</h4>
             To add a prep template you need to:
             <ol>
-              <li>
-                select your prep template file
+              <li>select your prep template file
                 <select id="add_prep_template_{{r.id}}">
                   {% for f in files %}
                     <option value="{{f}}">{{f}}</option>
@@ -220,6 +218,16 @@ function newInvestigationTypeChanged(rawDataID, isEdit){
                   </tr>
                 </table>
               </li>
+              {% if r.filetype == "WGS-FASTQ" %}
+              <li> Select the strain:
+                <select id="add_strain_{{r.id}}">
+                {% for strain in strains %}
+                  <option value="{{strain.id}}">{{strain.unofficial_name}}</option>
+                {% end %}
+                </select>
+                <a class="btn btn-default btn-sm glyphicon glyphicon-plus" href="/create_strain/?study_id={{study_id}}&rd_tab={{r.id}}" title="Add a new strain"> </a>
+              </li>
+              {% end %}
             </ol>
             <br/>
             <a class="btn btn-primary" onclick="add_prep_template({{r.id}});">Add prep template</a>
@@ -463,36 +471,42 @@ function newInvestigationTypeChanged(rawDataID, isEdit){
   }
 
   function add_prep_template(raw_data_id) {
-    if (confirm("Are you sure you want to add a new prep template?")) {
-      var form = $("<form>")
-        .attr("action", window.location.href)
-        .attr("method", "post")
-        .append($("<input>")
-          .attr("type", "hidden")
-          .attr("name", "raw_data_id")
-          .attr("value", raw_data_id))
-        .append($("<input>")
-          .attr("type", "hidden")
-          .attr("name", "add_prep_template")
-          .attr("value", $("#add_prep_template_" + raw_data_id).val()))
-        .append($("<input>")
-          .attr("type", "hidden")
-          .attr("name", "investigation-type")
-          .attr("value", $("#investigation-type-" + raw_data_id).val()))
-        .append($("<input>")
-          .attr("type", "hidden")
-          .attr("name", "user-defined-investigation-type")
-          .attr("value", $("#user-defined-investigation-type-" + raw_data_id).val()))
-        .append($("<input>")
-          .attr("type", "hidden")
-          .attr("name", "new-investigation-type")
-          .attr("value", $("#new-investigation-type-" + raw_data_id).val()))
-        .append($("<input>")
-          .attr("type", "hidden")
-          .attr("name", "data_type_id")
-          .attr("value", $("#data_type_" + raw_data_id).val()));
-      $("body").append(form);
-      form.submit();
+    strain_id = $("#add_strain_" + raw_data_id).val()
+    if (!strain_id){
+      alert("Please choose a strain");
+    }
+    else{
+      if (confirm("Are you sure you want to add a new prep template?")) {
+        var form = $("<form>")
+          .attr("action", window.location.href)
+          .attr("method", "post")
+          .append($("<input>")
+            .attr("type", "hidden")
+            .attr("name", "raw_data_id")
+            .attr("value", raw_data_id))
+          .append($("<input>")
+            .attr("type", "hidden")
+            .attr("name", "add_prep_template")
+            .attr("value", $("#add_prep_template_" + raw_data_id).val()))
+          .append($("<input>")
+            .attr("type", "hidden")
+            .attr("name", "investigation-type")
+            .attr("value", $("#investigation-type-" + raw_data_id).val()))
+          .append($("<input>")
+            .attr("type", "hidden")
+            .attr("name", "user-defined-investigation-type")
+            .attr("value", $("#user-defined-investigation-type-" + raw_data_id).val()))
+          .append($("<input>")
+            .attr("type", "hidden")
+            .attr("name", "new-investigation-type")
+            .attr("value", $("#new-investigation-type-" + raw_data_id).val()))
+          .append($("<input>")
+            .attr("type", "hidden")
+            .attr("name", "data_type_id")
+            .attr("value", $("#data_type_" + raw_data_id).val()));
+        $("body").append(form);
+        form.submit();
+      }
     }
   }
 
