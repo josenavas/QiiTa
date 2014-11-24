@@ -30,6 +30,8 @@ class StrainTests(TestCase):
         self.storage_conditions_id = 1
         self.culture_collection_name = "ATCC"
 
+        self.tester = Strain(1)
+
         _, self.db_dir = get_mountpoint("strain")[0]
         self._clean_up_files = []
 
@@ -79,6 +81,10 @@ class StrainTests(TestCase):
 
     def test_exists_false(self):
         self.assertFalse(Strain.exists("Do not exists"))
+
+    def test_unofficial_name(self):
+        exp = "Bacteroides thetaiotaomicron VPI-5482, B. theta VPI-5482"
+        self.assertEqual(self.tester.unofficial_name, exp)
 
 
 if __name__ == '__main__':

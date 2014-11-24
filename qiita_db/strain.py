@@ -60,3 +60,11 @@ class Strain(QiitaObject):
         return conn_handler.execute_fetchone(
             "SELECT EXISTS(SELECT * FROM qiita.{0} WHERE "
             "unofficial_name=%s)".format(cls._table), (unofficial_name,))[0]
+
+    @property
+    def unofficial_name(self):
+        conn_handler = SQLConnectionHandler()
+        return conn_handler.execute_fetchone(
+            "SELECT unofficial_name FROM qiita.{0} "
+            "WHERE strain_id = %s".format(self._table),
+            (self.id,))[0]
