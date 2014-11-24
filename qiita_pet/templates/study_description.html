@@ -318,8 +318,13 @@ function newInvestigationTypeChanged(rawDataID, isEdit){
                 {% if not prep.preprocessed_data or prep.preprocessing_status.startswith('failed') %}
                   <td style="padding:3px;">
                   {% if study_status == 'sandbox' %}
-                    <input type="button" class="btn btn-primary" value="Split libraries" onclick="split_libraries({{prep.id}});">
-                    <input type="checkbox" id="rev_comp_mapping_barcodes_{{prep.id}}"> Use rev_comp_mapping_barcodes
+                    {% if prep.data_type() == "Single Genome" %}
+                      <input type="button" class="btn btn-primary" value="Preprocess" onclick="preprocess({{prep.id}});">
+                      <input type="number" id="trimming_{{prep.id}}"> Trimming length
+                    {% else %}
+                      <input type="button" class="btn btn-primary" value="Split libraries" onclick="split_libraries({{prep.id}});">
+                      <input type="checkbox" id="rev_comp_mapping_barcodes_{{prep.id}}"> Use rev_comp_mapping_barcodes
+                    {% end %}
                     <hr/>
                   {% end %}
                     <i>Status:</i> {{prep.preprocessing_status}}
@@ -531,39 +536,39 @@ function newInvestigationTypeChanged(rawDataID, isEdit){
       }
     }
 
-    if (barcodes.length === 0 || forward.length === 0) {
-      alert("You need to select at least one barcode and one forward file.");
-    } else if (barcodes.length != forward.length) {
-      alert("You must select the same number of barcode and forward seq files.");
-    } else if (reverse.length !== 0 && reverse.length != forward.length) {
-      alert("If you select reverse seqs, they should have the same number than barcodes and forward files.");
-    } else {
-      var form = $("<form>")
-        .attr("action", "/study/add_files_to_raw_data")
-        .attr("method", "post")
-        .append($("<input>")
-          .attr("type", "hidden")
-          .attr("name", "raw_data_id")
-          .attr("value", raw_data_id))
-        .append($("<input>")
-          .attr("type", "hidden")
-          .attr("name", "study_id")
-          .attr("value", {{study_id}}))
-        .append($("<input>")
-          .attr("type", "hidden")
-          .attr("name", "barcodes")
-          .attr("value", barcodes.join()))
-        .append($("<input>")
-          .attr("type", "hidden")
-          .attr("name", "forward")
-          .attr("value", forward.join()))
-        .append($("<input>")
-          .attr("type", "hidden")
-          .attr("name", "reverse")
-          .attr("value", reverse.join()));
-      $("body").append(form);
-      form.submit();
-    }
+    // if (barcodes.length === 0 || forward.length === 0) {
+    //   alert("You need to select at least one barcode and one forward file.");
+    // } else if (barcodes.length != forward.length) {
+    //   alert("You must select the same number of barcode and forward seq files.");
+    // } else if (reverse.length !== 0 && reverse.length != forward.length) {
+    //   alert("If you select reverse seqs, they should have the same number than barcodes and forward files.");
+    // } else {
+    var form = $("<form>")
+      .attr("action", "/study/add_files_to_raw_data")
+      .attr("method", "post")
+      .append($("<input>")
+        .attr("type", "hidden")
+        .attr("name", "raw_data_id")
+        .attr("value", raw_data_id))
+      .append($("<input>")
+        .attr("type", "hidden")
+        .attr("name", "study_id")
+        .attr("value", {{study_id}}))
+      .append($("<input>")
+        .attr("type", "hidden")
+        .attr("name", "barcodes")
+        .attr("value", barcodes.join()))
+      .append($("<input>")
+        .attr("type", "hidden")
+        .attr("name", "forward")
+        .attr("value", forward.join()))
+      .append($("<input>")
+        .attr("type", "hidden")
+        .attr("name", "reverse")
+        .attr("value", reverse.join()));
+    $("body").append(form);
+    form.submit();
+    // }
   }
 
   function unlink_all_files(raw_data_id) {
