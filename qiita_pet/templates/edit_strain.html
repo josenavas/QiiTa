@@ -1,0 +1,61 @@
+{% extends sitebase.html %}
+
+{% block head %}
+<script>
+function submit_create_strain() {
+  $("#create_strain_submit").prop('disabled', true);
+  res = null;
+  $.ajax({
+    type: "GET",
+    url: '/check_strain/',
+    data: {strain_unofficial: $("#{{creation_form.unofficial_name.id}}")[0].value},
+    success: function(data) {
+          if (data == 'True') {
+              res = true;
+          }
+          else {
+              alert("Strain '" + $("#{{creation_form.unofficial_name.id}}")[0].value + "' already exists! Please choose a different name.");
+              $("#create_strain_submit").prop('disabled', false);
+              res = false;
+          }
+        },
+    async: false
+  })
+  return res;
+};
+
+function cancel_edition(){
+  if (confirm("Are you sure you want to go to the study description page?")){
+    window.location.href = "/study/description/{{study_id}}?tab_to_display={{rd_tab}}";
+  }
+}
+</script>
+{% end %}
+
+{% block content %}
+<h1>Create a new strain</h1>
+<h3> All fields are required</h3>
+
+<form id="create_strain" name="create_strain" action="/create_strain/?study_id={{study_id}}&rd_tab={{rd_tab}}" method="POST" onsubmit="return submit_create_strain();">
+<table>
+{% for idx, form_item in enumerate(creation_form, start=1) %}
+	{% set kwargs = {'tabindex': idx, 'class_': 'form_control', 'required': form_item.flags.required} %}
+	{% set additional_info = '' %}
+	<tr>
+		<td width="20%">{% raw form_item.label %} <br /> {{additional_info}}</td>
+    <td width="40%">{% raw form_item(**kwargs) %}
+    {%if form_item.label.text == "Sequence file" %}
+    <a href="/study/upload/{{study_id}}" class="btn btn-default btn-sm glyphicon glyphicon-upload" title="Upload sequence file" style="margin:5px; word-spacing: -5px;"> Upload</a>
+    {% end %}
+    </td>
+	</tr>
+{% end %}
+	<tr>
+    <td>
+      <a name="bot"><input type='submit' id="create_strain_submit" class='btn btn-success' value="Create strain">
+      <input type='button' id="cancel_form" class='btn btn-default' value="Back" onclick="cancel_edition()">
+    </td>
+  </tr>
+</table>
+</form>
+{% end %}
