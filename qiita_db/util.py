@@ -594,6 +594,7 @@ def insert_filepaths(filepaths, obj_id, table, filepath_table, conn_handler,
             queue not specified, or no return value if queue specified
         """
         new_filepaths = filepaths
+        open('test.txt', 'w').write("%s" % new_filepaths)
 
         dd_id, mp = get_mountpoint(table, conn_handler)[0]
         base_fp = join(get_db_files_base_dir(), mp)

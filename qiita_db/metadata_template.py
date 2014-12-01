@@ -1699,14 +1699,15 @@ class PrepTemplate(MetadataTemplate):
 
         # Gets the orginal mapping columns and readjust the order to comply
         # with QIIME requirements
-        cols = mapping.columns.values.tolist()
-        cols.remove('BarcodeSequence')
-        cols.remove('LinkerPrimerSequence')
-        cols.remove('Description')
-        new_cols = ['BarcodeSequence', 'LinkerPrimerSequence']
-        new_cols.extend(cols)
-        new_cols.append('Description')
-        mapping = mapping[new_cols]
+        if self.data_type in TARGET_GENE_DATA_TYPES:
+            cols = mapping.columns.values.tolist()
+            cols.remove('BarcodeSequence')
+            cols.remove('LinkerPrimerSequence')
+            cols.remove('Description')
+            new_cols = ['BarcodeSequence', 'LinkerPrimerSequence']
+            new_cols.extend(cols)
+            new_cols.append('Description')
+            mapping = mapping[new_cols]
 
         # figuring out the filepath for the QIIME map file
         _id, fp = get_mountpoint('templates')[0]

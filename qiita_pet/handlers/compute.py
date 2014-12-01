@@ -52,10 +52,11 @@ class AddFilesToRawData(BaseHandler):
         barcodes, forward_reads, reverse_reads = [], [], []
         for _, f in get_mountpoint("uploads", retrive_all=True):
             f = join(f, str(study_id))
-            for t in barcodes_str.split(','):
-                ft = join(f, t)
-                if exists(ft):
-                    barcodes.append([ft, "raw_barcodes"])
+            if barcodes_str:
+                for t in barcodes_str.split(','):
+                    ft = join(f, t)
+                    if exists(ft):
+                        barcodes.append([ft, "raw_barcodes"])
             for t in forward_reads_str.split(','):
                 ft = join(f, t)
                 if exists(ft):
