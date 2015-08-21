@@ -1022,3 +1022,54 @@ class EBISubmission(object):
             print "FAILED"
 
         return (study_accession, submission_accession)
+
+
+class EBISubmitter(ParallelWrapper):
+    def _construct_job_graph(self, preprocessed_data):
+        """Constructs the workflow graph to submit a preprocessed data to EBI
+
+        The steps performed to submit a preprocessed data to EBI are:
+        1) Validate the info for submission
+        2) Create per sample fastq
+        3) Generate the XML files from the DB information
+        4) Submit sequences to EBI
+        5) Submit XML to EBI
+        """
+        self.preprocessed_data = preprocessed_data
+
+        # Node 1: Validate info for submission
+        val_node = "VALIDATE"
+        self._job_graph.add_node(
+            val_node, func=, args=, job_name="Validate info", requires_deps=False)
+
+        # Node 2: Create per sample fastq, depends on node 1
+        per_sample_node = "PER_SAMPLE_FASTQ"
+        self._job_graph.add_node(
+            per_sample_node, func=, args=, job_name="Generate per sample FASTQ", requires_deps=False)
+        self._job_graph.add_edge(val_node, per_sample_node)
+
+        # Node 3: Generate the XML files, depends on node 1
+        gen_xml_node = "GEN_XML"
+        self._job_graph.add_node(
+            gen_xml_node, func=, args=, job_name="Generate XML files", requires_deps=False)
+        self._job_graph.add_edge(val_node, gen_xml_node)
+
+        # Node 4: Submit sequences to EBI, depends on node 2 and 3, as we don't
+        # want to start submitting anything if there is an error in our end
+        submit_seqs_node = "SUBMIT_SEQS"
+        self._job_graph.add_node(
+            submit_seqs_node, func=, args=, job_name="Submit sequence files", requires_deps=False)
+        self._job_graph.add_edge(per_sample_node, submit_seqs_node)
+        self._job_graph.add_edge(val_node, submit_seqs_node)
+
+        # Node 5: Submit XML files to EBI, depends on node 4
+        submit_xml_node = "SUBMIT_XML"
+        self._job_graph.add_node(
+            submit_xml_node, func=, args=, job_name="Submit XML files", requires_deps=False)
+        self._job_graph.add_edge(submit_seqs_node, submit_xml_node)
+
+    def _failure_callback(self, msg=None):
+        """Callback to execute in case that any of the job nodes failed
+
+        Need to change the submit to EBI to failed"""
+        self.preprocessed_data.update_insdc_status('failed:\n %s' % msg)
