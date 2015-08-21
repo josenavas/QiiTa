@@ -989,7 +989,7 @@ class PreprocessedData(BaseData):
             ``submission_acc`` are ``None``.
         """
         with TRN:
-            if (state not in ('not submitted', 'submitting', 'success') or
+            if (state not in ('not submitted', 'submitting', 'success') and
                     not state.startswith('failed')):
                 raise ValueError("Unknown state: %s" % state)
 

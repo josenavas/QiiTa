@@ -611,6 +611,9 @@ class PreprocessedDataTests(TestCase):
         self.assertEqual(pd.submitted_to_insdc_status(), 'submitting')
         pd.update_insdc_status('failed')
         self.assertEqual(pd.submitted_to_insdc_status(), 'failed')
+        pd.update_insdc_status('failed: due to some error')
+        self.assertEqual(pd.submitted_to_insdc_status(),
+                         'failed: due to some error')
 
         pd.update_insdc_status('success', 'foo', 'bar')
         self.assertEqual(pd.submitted_to_insdc_status(), 'success')
