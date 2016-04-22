@@ -513,10 +513,11 @@ class Analysis(qdb.base.QiitaStatusObject):
 
         Returns
         -------
-        str or None
-            full filepath to the mapping file or None if not generated
+        tuple of (int, str) or None
+            The filepath id and the filepath of the tgz file or None if
+            it doesn't exist
         """
-        fp = [fp for _, fp, fp_type in qdb.util.retrieve_filepaths(
+        fp = [(id_, fp) for id_, fp, fp_type in qdb.util.retrieve_filepaths(
             "analysis_filepath", "analysis_id", self._id)
             if fp_type == 'tgz']
 
