@@ -390,7 +390,7 @@ class Analysis(qdb.base.QiitaStatusObject):
             all_samples = {k: set(v) for k, v in viewitems(self.samples)}
 
             for biom, filepath in viewitems(bioms):
-                table = load_table(filepath)
+                table = load_table(filepath[1])
                 ids = set(table.ids())
                 for k in all_samples:
                     all_samples[k] = all_samples[k] - ids
@@ -466,7 +466,8 @@ class Analysis(qdb.base.QiitaStatusObject):
         Returns
         -------
         dict
-            Dictonary in the form {data_type: full BIOM filepath}
+            Dictonary in the form
+            {data_type: (filepath_id, full BIOM filepath)}
         """
         fps = [(_id, fp) for _id, fp, ftype in qdb.util.retrieve_filepaths(
             "analysis_filepath", "analysis_id", self._id)
@@ -482,7 +483,7 @@ class Analysis(qdb.base.QiitaStatusObject):
                 qdb.sql_connection.TRN.add(sql, [tuple(fps_ids)])
                 data_types = dict(qdb.sql_connection.TRN.execute_fetchindex())
 
-            return {data_types[_id]: f for _id, f in fps}
+            return {data_types[_id]: (_id, f) for _id, f in fps}
         else:
             return {}
 

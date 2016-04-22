@@ -366,7 +366,7 @@ class TestAnalysis(TestCase):
                          [qdb.user.User("shared@foo.bar")])
 
     def test_retrieve_biom_tables(self):
-        exp = {"18S": join(self.fp, "1_analysis_18S.biom")}
+        exp = {"18S": (15, join(self.fp, "1_analysis_18S.biom"))}
         self.assertEqual(self.analysis.biom_tables, exp)
 
     def test_all_associated_filepaths(self):
@@ -602,7 +602,7 @@ class TestAnalysis(TestCase):
             4, ['1.SKB8.640193', '1.SKD8.640184', '1.SKB7.640196'])]}
         self.analysis._build_biom_tables(grouped_samples, 100)
         obs = self.analysis.biom_tables
-        self.assertEqual(obs, {'18S': self.biom_fp})
+        self.assertEqual(obs, {'18S': (new_id, self.biom_fp)})
 
         table = load_table(self.biom_fp)
         obs = set(table.ids(axis='sample'))
@@ -629,11 +629,13 @@ class TestAnalysis(TestCase):
         self.assertEqual(obs, exp)
 
     def test_build_biom_tables_duplicated_samples_not_merge(self):
+        new_id = qdb.util.get_count('qiita.filepath') + 1
         grouped_samples = {'18S.1.3': [
             (4, ['1.SKB8.640193', '1.SKD8.640184', '1.SKB7.640196']),
             (5, ['1.SKB8.640193', '1.SKD8.640184', '1.SKB7.640196'])]}
         self.analysis._build_biom_tables(grouped_samples, 100, True)
         obs = self.analysis.biom_tables
+        self.assertEqual(obs, {'18S': (new_id, self.biom_fp)})
 
         table = load_table(self.biom_fp)
         obs = set(table.ids(axis='sample'))
@@ -660,7 +662,7 @@ class TestAnalysis(TestCase):
 
         # testing that the generated files have the same sample ids
         biom_ids = load_table(
-            self.analysis.biom_tables['18S']).ids(axis='sample')
+            self.analysis.biom_tables['18S'][1]).ids(axis='sample')
         mf_ids = qdb.metadata_template.util.load_template_to_dataframe(
             self.analysis.mapping_file[1], index='#SampleID').index
 
@@ -679,7 +681,7 @@ class TestAnalysis(TestCase):
         # testing that the generated files have the same sample ids
         biom_ids = []
         for _, fp in viewitems(self.analysis.biom_tables):
-            biom_ids.extend(load_table(fp).ids(axis='sample'))
+            biom_ids.extend(load_table(fp[1]).ids(axis='sample'))
         mf_ids = qdb.metadata_template.util.load_template_to_dataframe(
             self.analysis.mapping_file[1], index='#SampleID').index
         self.assertItemsEqual(biom_ids, mf_ids)
