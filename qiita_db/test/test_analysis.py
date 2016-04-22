@@ -443,10 +443,10 @@ class TestAnalysis(TestCase):
         self.assertEqual(self.analysis.pmid, "11211221212213")
 
     def test_retrieve_mapping_file(self):
-        exp = join(self.fp, "1_analysis_mapping.txt")
+        exp = (16, join(self.fp, "1_analysis_mapping.txt"))
         obs = self.analysis.mapping_file
         self.assertEqual(obs, exp)
-        self.assertTrue(exists(exp))
+        self.assertTrue(exists(exp[1]))
 
     def test_retrieve_mapping_file_none(self):
         new = qdb.analysis.Analysis.create(
@@ -540,10 +540,10 @@ class TestAnalysis(TestCase):
         npt.assert_warns(qdb.exceptions.QiitaDBWarning,
                          self.analysis._build_mapping_file, samples)
         obs = self.analysis.mapping_file
-        self.assertEqual(obs, self.map_fp)
+        self.assertEqual(obs, (16, self.map_fp))
 
         obs = qdb.metadata_template.util.load_template_to_dataframe(
-            obs, index='#SampleID')
+            obs[1], index='#SampleID')
         exp = npt.assert_warns(
             qdb.exceptions.QiitaDBWarning,
             qdb.metadata_template.util.load_template_to_dataframe,
@@ -571,7 +571,7 @@ class TestAnalysis(TestCase):
                          self.analysis._build_mapping_file, samples, True)
 
         obs = qdb.metadata_template.util.load_template_to_dataframe(
-            self.analysis.mapping_file, index='#SampleID')
+            self.analysis.mapping_file[1], index='#SampleID')
         exp = npt.assert_warns(
             qdb.exceptions.QiitaDBWarning,
             qdb.metadata_template.util.load_template_to_dataframe,
@@ -589,7 +589,7 @@ class TestAnalysis(TestCase):
         npt.assert_warns(qdb.exceptions.QiitaDBWarning,
                          self.analysis._build_mapping_file, samples)
         obs = qdb.metadata_template.util.load_template_to_dataframe(
-            self.analysis.mapping_file, index='#SampleID')
+            self.analysis.mapping_file[1], index='#SampleID')
         exp = npt.assert_warns(
             qdb.exceptions.QiitaDBWarning,
             qdb.metadata_template.util.load_template_to_dataframe,
@@ -662,7 +662,7 @@ class TestAnalysis(TestCase):
         biom_ids = load_table(
             self.analysis.biom_tables['18S']).ids(axis='sample')
         mf_ids = qdb.metadata_template.util.load_template_to_dataframe(
-            self.analysis.mapping_file, index='#SampleID').index
+            self.analysis.mapping_file[1], index='#SampleID').index
 
         self.assertItemsEqual(biom_ids, mf_ids)
 
@@ -681,7 +681,7 @@ class TestAnalysis(TestCase):
         for _, fp in viewitems(self.analysis.biom_tables):
             biom_ids.extend(load_table(fp).ids(axis='sample'))
         mf_ids = qdb.metadata_template.util.load_template_to_dataframe(
-            self.analysis.mapping_file, index='#SampleID').index
+            self.analysis.mapping_file[1], index='#SampleID').index
         self.assertItemsEqual(biom_ids, mf_ids)
 
         # now that the samples have been prefixed
