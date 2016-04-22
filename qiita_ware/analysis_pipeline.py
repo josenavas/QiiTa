@@ -95,10 +95,11 @@ class RunAnalysis(ParallelWrapper):
         # creating bioms at this point cause all this section runs on a worker
         # node, currently an ipython job
         analysis.build_files(rarefaction_depth, merge_duplicated_sample_ids)
-        mapping_file = analysis.mapping_file
+        mapping_file = analysis.mapping_file[1]
 
         tree_commands = ["Beta Diversity", "Alpha Rarefaction"]
         for data_type, biom_fp in viewitems(analysis.biom_tables):
+            biom_fp = biom_fp[1]
             biom_table = load_table(biom_fp)
             # getting reference_id and software_command_id from the first
             # sample of the biom. This decision was discussed on the qiita

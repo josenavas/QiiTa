@@ -34,7 +34,7 @@ from qiita_db.job import Command
 from qiita_db.user import User
 from qiita_db.util import (get_db_files_base_dir, add_message,
                            check_access_to_analysis_result,
-                           filepath_ids_to_rel_paths, get_filepath_id)
+                           filepath_ids_to_rel_paths)
 from qiita_db.exceptions import QiitaDBUnknownIDError
 from qiita_db.logger import LogEntry
 from qiita_db.reference import Reference
@@ -231,7 +231,6 @@ class ShowAnalysesHandler(BaseHandler):
         analyses = user.shared_analyses | user.private_analyses
 
         is_local_request = is_localhost(self.request.headers['host'])
-        gfi = partial(get_filepath_id, 'analysis')
         dlop = partial(download_link_or_path, is_local_request)
         mappings = {}
         bioms = {}
@@ -241,17 +240,17 @@ class ShowAnalysesHandler(BaseHandler):
             # getting mapping file
             mapping = analysis.mapping_file
             if mapping is not None:
-                mappings[_id] = dlop(mapping, gfi(mapping), 'mapping file')
+                mappings[_id] = dlop(mapping[1], mapping[0], 'mapping file')
             else:
                 mappings[_id] = ''
             # getting biom tables
-            links = [dlop(f, gfi(f), l)
+            links = [dlop(f[1], f[0], l)
                      for l, f in viewitems(analysis.biom_tables)]
             bioms[_id] = '\n'.join(links)
             # getting tgz file
             tgz = analysis.tgz
             if tgz is not None:
-                tgzs[_id] = dlop(tgz, gfi(tgz), 'tgz file')
+                tgzs[_id] = dlop(tgz[1], tgz[0], 'tgz file')
             else:
                 tgzs[_id] = ''
 
