@@ -1,0 +1,69 @@
+{% extends ../../sitebase.html %}
+{% block head %}
+<script>
+$(document).ready( function() {
+  $("#tree-file-div").hide();
+  $("#tree-sel").change(function () {
+    if ($(this).val() === "Other") {
+      $("#tree-file-div").show();
+      $("#tree-file").prop('required', true);
+    } else {
+      $("#tree-file-div").hide();
+      $("#tree-file").prop('required', false);
+    }
+  });
+});
+</script>
+{% end %}
+{% block content %}
+
+<div class="container">
+  <h1>Strided State UniFrac</h1>
+  <p>
+    <b>Strided State UniFrac</b> is a new implementation of <b>UniFrac</b> that is specifically
+    designed to handle very large datasets. Like <b>UniFrac</b>, <b>Strided State UniFrac</b> provides a
+    suite of tools for the comparison of microbial communities using phylogenetic information.
+    It takes as input a single phylogenetic tree that contains sequences derived from at least
+    three different environmental samples, a file mapping ids used in the tree to a set of
+    unique sample ids, and a category mapping file describing additional relationships
+    between samples and subcategories for visualizations.
+  </p>
+  <h3>Process your data</h3>
+  <form method="POST" enctype="multipart/form-data" action="/toolbox/strided_state_unifrac/">
+    <div class="row">
+      <div class="col-xs-6 form-group">
+        <label>Choose sample ID file:</label>
+        <input class="form-control" type="file" name="sample-id-file" required/>
+      </div>
+      <div class="col-xs-6 form-group">
+        <label>Choose category map file:</label>
+        <input class="form-control" type="file" name="category-map-file" required/>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-6 form-group">
+        <label>Choose tree:</label>
+        <select class="form-control" id="tree-sel" name="tree-sel" required>
+          <option disabled selected></option>
+          <option value='GG_13_8'>GreenGenes (13.8) 97% otus</option>
+          <option value='Other'>Other</option>
+        </select>
+      </div>
+      <div class="col-xs-6 form-group" id="tree-file-div">
+        <label>Upload your tree file:</label>
+        <input class="form-control" type="file" name="tree-file" id="tree-file"/>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-2 form-group">
+        <button type="submit" class="form-control btn btn-success">Submit</button>
+      </div>
+    </div>
+  </form>
+  <h3>Check previous results</h3>
+  <p>
+    Previous results are not backed up and they will be removed periodically.
+    Please plan accordingly.
+  </p>
+</div>
+{% end %}

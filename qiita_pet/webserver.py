@@ -60,6 +60,7 @@ from qiita_db.handlers.plugin import (
 from qiita_pet import uimodules
 from qiita_db.util import get_mountpoint
 from qiita_pet.handlers.rest import ENDPOINTS as REST_ENDPOINTS
+from qiita_pet.handlers.toolbox import ENDPOINTS as TOOLBOX_ENDPOINTS
 if qiita_config.portal == "QIITA":
     from qiita_pet.handlers.portal import (
         StudyPortalHandler, StudyPortalAJAXHandler)
@@ -177,6 +178,9 @@ class Application(tornado.web.Application):
 
         # rest endpoints
         handlers.extend(REST_ENDPOINTS)
+
+        # toolbox endpoints
+        handlers.extend(TOOLBOX_ENDPOINTS)
 
         if qiita_config.portal == "QIITA":
             # Add portals editing pages only on main portal
